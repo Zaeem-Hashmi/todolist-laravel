@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tasks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -24,12 +26,19 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+//        dd(Auth::user());
         $validator = Validator::make($request->all(), [
             'task_name' =>  'required',
             'task_duration' => 'required',
-            'task_description' => 'required',
+            'task_detail' => 'required',
         ])->validate();
-        return redirect()->back()->with("text",'wrong record');
+        $task  = new Tasks();
+        $task->user_id  = Auth::user()->id;
+        $task->task_name = $request->task_name;
+        $task->task_duration = $request->task_duration;
+        $task->task_description = $request->task_detail;
+        $task->save();
+        return redirect()->back()->with("alert-success","task added successfully");
     }
 
     public function edit($id)

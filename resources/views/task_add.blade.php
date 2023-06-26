@@ -9,6 +9,7 @@
     @if(count($errors)>0)
         {{$errors}}
     @endif
+        <div>{{Session::get("alert-success")}}</div>
     <div class="container">
         <div class="row align-item-center" style="height: 100vh;">
             <div class="col-md-6 offset-md-3  align-self-center">
